@@ -95,6 +95,7 @@ def test_add_product_then_products_string():
 
     assert category.products == "Телевизор, 123000.0 руб. Остаток: 7 шт."
 
+
 def test_category_str_sums_quantities():
     products = [
         Product("Товар A", "Описание", 100, 10),
@@ -134,14 +135,15 @@ def test_category_products_property_empty():
 def test_category_counters():
     Category.category_count = 0
     Category.product_count = 0
-    cat1 = Category(
-        "Кат 1", "описание",
+    Category(
+        "Кат 1",
+        "описание",
         [Product("A", "описание", 100, 10), Product("B", "описание", 200, 2)],
     )
     assert Category.category_count == 1
     assert Category.product_count == 2
 
-    cat2 = Category("Кат 2", "описание", [Product("C", "описание", 50, 5)])
+    Category("Кат 2", "описание", [Product("C", "описание", 50, 5)])
     assert Category.category_count == 2
     assert Category.product_count == 3
 

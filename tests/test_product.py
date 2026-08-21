@@ -98,14 +98,15 @@ def test_price_setter_rejects_negative(capsys):
     captured = capsys.readouterr()
     assert "Цена не должна быть нулевая или отрицательная" in captured.out
 
+
 def test_product_str():
     product = Product("Товар A", "Описание", 100, 10)
     assert str(product) == "Товар A, 100 руб. Остаток: 10 шт."
 
 
 def test_product_add():
-    a = Product("Товар A", "Описание", 100, 10)   # 100 * 10 = 1000
-    b = Product("Товар B", "Описание", 200, 2)    # 200 * 2 = 400
+    a = Product("Товар A", "Описание", 100, 10)  # 100 * 10 = 1000
+    b = Product("Товар B", "Описание", 200, 2)  # 200 * 2 = 400
     assert a + b == 1400
 
 
@@ -118,6 +119,7 @@ def test_product_add_zero_quantity():
 def test_product_add_not_supported_type():
     a = Product("Товар A", "Описание", 100, 10)
     assert a.__add__("строка") is NotImplemented
+
 
 def test_price_getter():
     product = Product("Товар A", "Описание", 100, 10)

@@ -41,3 +41,58 @@ def test_product_count():
     Category(name="Кат2", description="Описание 2", products=[p1])  # +1 товар
 
     assert Category.product_count == 3
+
+def test_new_product_creates_product_from_dict():
+    """new_product создаёт объект Product из словаря."""
+    data = {
+        "name": "Samsung Galaxy S23 Ultra",
+        "description": "256GB, Серый цвет, 200MP камера",
+        "price": 180000.0,
+        "quantity": 5,
+    }
+    product = Product.new_product(data)
+
+    assert isinstance(product, Product)
+    assert product.name == "Samsung Galaxy S23 Ultra"
+    assert product.description == "256GB, Серый цвет, 200MP камера"
+    assert product.price == 180000.0
+    assert product.quantity == 5
+
+
+def test_new_product_returns_instance():
+    """new_product возвращает именно объект класса Product."""
+    data = {"name": "Тест", "description": "оп", "price": 100.0, "quantity": 2}
+    assert isinstance(Product.new_product(data), Product)
+
+
+def test_price_getter_returns_value():
+    """Геттер возвращает текущую цену."""
+    product = Product("Тест", "оп", 2000.0, 5)
+    assert product.price == 2000.0
+
+
+def test_price_setter_valid_updates_price():
+    """Сеттер меняет цену, если она положительная."""
+    product = Product("Тест", "оп", 2000.0, 5)
+    product.price = 3000.0
+    assert product.price == 3000.0
+
+
+def test_price_setter_rejects_zero(capsys):
+    """Цена 0 не устанавливается, выводится сообщение."""
+    product = Product("Тест", "оп", 2000.0, 5)
+    product.price = 0
+
+    assert product.price == 2000.0
+    captured = capsys.readouterr()
+    assert "Цена не должна быть нулевая или отрицательная" in captured.out
+
+
+def test_price_setter_rejects_negative(capsys):
+    """Отрицательная цена не устанавливается, выводится сообщение."""
+    product = Product("Тест", "оп", 2000.0, 5)
+    product.price = -100
+
+    assert product.price == 2000.0
+    captured = capsys.readouterr()
+    assert "Цена не должна быть нулевая или отрицательная" in captured.out

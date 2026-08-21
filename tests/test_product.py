@@ -97,3 +97,4 @@ def test_price_setter_rejects_negative(capsys):
     assert product.price == 2000.0
     captured = capsys.readouterr()
     assert "Цена не должна быть нулевая или отрицательная" in captured.out
+

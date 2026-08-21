@@ -1,5 +1,5 @@
-from src.product import Product
 from src.category import Category
+from src.product import Product
 
 
 def test_first_product_init(first_product):
@@ -41,6 +41,7 @@ def test_product_count():
     Category(name="Кат2", description="Описание 2", products=[p1])  # +1 товар
 
     assert Category.product_count == 3
+
 
 def test_new_product_creates_product_from_dict():
     """new_product создаёт объект Product из словаря."""

@@ -1,5 +1,5 @@
-from src.product import Product
 from src.category import Category
+from src.product import Product
 
 
 def test_first_category_init(first_category):
@@ -21,7 +21,6 @@ def test_second_category_init(second_category):
     assert len(second_category.products.split("\n")) == 1
 
 
-
 def test_category_count():
     Category.category_count = 0
     Category.product_count = 0
@@ -31,14 +30,14 @@ def test_category_count():
 
     assert Category.category_count == 2
 
+
 def test_category_count_with_products():
     """product_count учитывает товары, переданные при создании."""
     Category.category_count = 0
     Category.product_count = 0
 
-    category = Category(
-        "Тест", "Описание",
-        [Product("А", "оп", 10.0, 1), Product("Б", "оп", 20.0, 2)]
+    Category(
+        "Тест", "Описание", [Product("А", "оп", 10.0, 1), Product("Б", "оп", 20.0, 2)]
     )
 
     assert Category.category_count == 1

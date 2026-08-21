@@ -22,5 +22,7 @@ class Category:
     def products(self):
         result = []
         for product in self.__products:
-            result.append(f"{product.name}, {product.price} руб. Остаток: {product.quantity} шт.\n")
+            result.append(
+                f"{product.name}, {product.price} руб. Остаток: {product.quantity} шт."
+            )
         return "\n".join(result)

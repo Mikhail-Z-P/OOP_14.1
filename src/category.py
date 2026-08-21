@@ -20,9 +20,10 @@ class Category:
 
     @property
     def products(self):
-        result = []
+        return "\n".join(str(product) for product in self.__products)
+
+    def __str__(self):
+        goods_count = 0
         for product in self.__products:
-            result.append(
-                f"{product.name}, {product.price} руб. Остаток: {product.quantity} шт."
-            )
-        return "\n".join(result)
+            goods_count += product.quantity
+        return f"{self.name}, количество продуктов: {goods_count} шт."

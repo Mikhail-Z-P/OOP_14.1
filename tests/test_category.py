@@ -94,3 +94,64 @@ def test_add_product_then_products_string():
     category.add_product(product)
 
     assert category.products == "Телевизор, 123000.0 руб. Остаток: 7 шт."
+
+
+def test_category_str_sums_quantities():
+    products = [
+        Product("Товар A", "Описание", 100, 10),
+        Product("Товар B", "Описание", 200, 2),
+    ]
+    category = Category("Электроника", "Описание", products)
+    # 10 + 2 = 12
+    assert str(category) == "Электроника, количество продуктов: 12 шт."
+
+
+def test_category_string_for_single_product():
+    products = [Product("Товар A", "Описание", 100, 5)]
+    category = Category("Электроника", "Описание", products)
+    assert str(category) == "Электроника, количество продуктов: 5 шт."
+
+
+def test_category_string_empty_products():
+    category = Category("Пустая", "Описание", [])
+    assert str(category) == "Пустая, количество продуктов: 0 шт."
+
+
+def test_category_products_property():
+    products = [
+        Product("Товар A", "Описание", 100, 10),
+        Product("Товар B", "Описание", 200, 2),
+    ]
+    category = Category("Электроника", "Описание", products)
+    expected = "Товар A, 100 руб. Остаток: 10 шт.\nТовар B, 200 руб. Остаток: 2 шт."
+    assert category.products == expected
+
+
+def test_category_products_property_empty():
+    category = Category("Пустая", "Описание", [])
+    assert category.products == ""
+
+
+def test_category_counters():
+    Category.category_count = 0
+    Category.product_count = 0
+    Category(
+        "Кат 1",
+        "описание",
+        [Product("A", "описание", 100, 10), Product("B", "описание", 200, 2)],
+    )
+    assert Category.category_count == 1
+    assert Category.product_count == 2
+
+    Category("Кат 2", "описание", [Product("C", "описание", 50, 5)])
+    assert Category.category_count == 2
+    assert Category.product_count == 3
+
+
+def test_add_product_updates_counter_and_list():
+    Category.category_count = 0
+    Category.product_count = 0
+    cat = Category("Кат 1", "описание", [Product("A", "описание", 100, 10)])
+    cat.add_product(Product("B", "описание", 200, 2))
+    assert Category.product_count == 2
+    assert cat.products == "A, 100 руб. Остаток: 10 шт.\nB, 200 руб. Остаток: 2 шт."

@@ -29,3 +29,13 @@ class Product:
             print("Цена не должна быть нулевая или отрицательная")
         else:
             self.__price = new_price
+
+    def __str__(self):
+        return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
+
+    def __add__(self, other):
+        if isinstance(other, Product):
+            full_cost = self.price * self.quantity
+            other_full_cost = other.price * other.quantity
+            return full_cost + other_full_cost
+        return NotImplemented

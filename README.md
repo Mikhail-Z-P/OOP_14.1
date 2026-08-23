@@ -4,6 +4,8 @@
 
 Созданны классы [category.py](src%2Fcategory.py),  [product.py](src%2Fproduct.py)
 
+Созданы подклассы Smartphone, LawnGrass, от класса [product.py](src%2Fproduct.py)
+
 ## Установка:
 
 1. Клонируйте репозиторий: 

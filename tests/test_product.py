@@ -1,6 +1,8 @@
-from src.product import Product, Smartphone, LawnGrass
-from src.category import Category
 import pytest
+
+from src.category import Category
+from src.product import LawnGrass, Product, Smartphone
+
 
 def test_first_product_init(first_product):
     assert first_product.name == "Samsung Galaxy S23 Ultra"
@@ -146,6 +148,7 @@ def test_new_product_from_dict():
     assert product.price == 100
     assert product.quantity == 10
     assert isinstance(product, Product)
+
 
 def test_add_same_product_class_ok():
     a = Product("Товар A", "Описание", 100, 10)

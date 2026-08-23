@@ -1,6 +1,8 @@
-from src.category import Category
-from src.product import Product, Smartphone, LawnGrass
 import pytest
+
+from src.category import Category
+from src.product import LawnGrass, Product, Smartphone
+
 
 def test_first_category_init(first_category):
     assert first_category.name == "Смартфоны"
@@ -155,6 +157,7 @@ def test_add_product_updates_counter_and_list():
     cat.add_product(Product("B", "описание", 200, 2))
     assert Category.product_count == 2
     assert cat.products == "A, 100 руб. Остаток: 10 шт.\nB, 200 руб. Остаток: 2 шт."
+
 
 def test_add_product_accepts_base_product():
     """add_product принимает обычный Product."""

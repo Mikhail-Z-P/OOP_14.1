@@ -1,5 +1,7 @@
+import pytest
+
 from src.category import Category
-from src.product import Product
+from src.product import LawnGrass, Product, Smartphone
 
 
 def test_first_category_init(first_category):
@@ -155,3 +157,56 @@ def test_add_product_updates_counter_and_list():
     cat.add_product(Product("B", "описание", 200, 2))
     assert Category.product_count == 2
     assert cat.products == "A, 100 руб. Остаток: 10 шт.\nB, 200 руб. Остаток: 2 шт."
+
+
+def test_add_product_accepts_base_product():
+    """add_product принимает обычный Product."""
+    category = Category("Тест", "Описание", [])
+    category.add_product(Product("Товар A", "Описание", 100, 10))
+    assert "Товар A" in category.products
+
+
+def test_add_product_accepts_smartphone():
+    """add_product принимает наследника Smartphone."""
+    category = Category("Тест", "Описание", [])
+    s = Smartphone("Samsung", "оп", 180000.0, 5, "высокая", "S23", 256, "серый")
+    category.add_product(s)
+    assert "Samsung" in category.products
+
+
+def test_add_product_accepts_lawn_grass():
+    """add_product принимает наследника LawnGrass."""
+    category = Category("Тест", "Описание", [])
+    g = LawnGrass("Микс 1", "оп", 350, 50, "Россия", 7, "зелёный")
+    category.add_product(g)
+    assert "Микс 1" in category.products
+
+
+def test_add_product_rejects_string():
+    """Строку (не продукт) добавить нельзя — TypeError."""
+    category = Category("Тест", "Описание", [])
+    with pytest.raises(TypeError):
+        category.add_product("не продукт")
+
+
+def test_add_product_rejects_number():
+    """Число (не продукт) добавить нельзя — TypeError."""
+    category = Category("Тест", "Описание", [])
+    with pytest.raises(TypeError):
+        category.add_product(42)
+
+
+def test_add_product_rejects_list():
+    """Список (не продукт) добавить нельзя — TypeError."""
+    category = Category("Тест", "Описание", [])
+    with pytest.raises(TypeError):
+        category.add_product([1, 2, 3])
+
+
+def test_add_rejected_product_does_not_increase_count():
+    """Счётчик product_count не растёт при отклонённом добавлении."""
+    Category.product_count = 0
+    category = Category("Тест", "Описание", [])
+    with pytest.raises(TypeError):
+        category.add_product("не продукт")
+    assert Category.product_count == 0

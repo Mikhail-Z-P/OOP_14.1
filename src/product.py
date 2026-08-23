@@ -34,8 +34,36 @@ class Product:
         return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
 
     def __add__(self, other):
-        if isinstance(other, Product):
-            full_cost = self.price * self.quantity
-            other_full_cost = other.price * other.quantity
-            return full_cost + other_full_cost
-        return NotImplemented
+        if type(self) is not type(other):
+            raise TypeError(
+                f"Нельзя складывать товары разных классов: "
+                f"{type(self).__name__} и {type(other).__name__}"
+            )
+        full_cost = self.price * self.quantity
+        other_full_cost = other.price * other.quantity
+        return full_cost + other_full_cost
+
+
+class Smartphone(Product):
+    """Смартфон"""
+
+    def __init__(
+        self, name, description, price, quantity, efficiency, model, memory, color
+    ):
+        super().__init__(name, description, price, quantity)
+        self.efficiency = efficiency
+        self.model = model
+        self.memory = memory
+        self.color = color
+
+
+class LawnGrass(Product):
+    """Трава газонная"""
+
+    def __init__(
+        self, name, description, price, quantity, country, germination_period, color
+    ):
+        super().__init__(name, description, price, quantity)
+        self.country = country
+        self.germination_period = germination_period
+        self.color = color

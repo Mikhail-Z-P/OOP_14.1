@@ -44,6 +44,7 @@ class Product:
         return full_cost + other_full_cost
 
 class Smartphone(Product):
+    """Смартфон"""
     def __init__(self, name, description, price, quantity, efficiency, model, memory, color):
         super().__init__(name, description, price, quantity)
         self.efficiency = efficiency
@@ -52,6 +53,7 @@ class Smartphone(Product):
         self.color = color
 
 class LawnGrass(Product):
+    """Трава газонная"""
     def __init__(self, name, description, price, quantity, country, germination_period, color):
         super().__init__(name, description, price, quantity)
         self.country = country

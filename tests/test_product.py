@@ -1,6 +1,6 @@
+from src.product import Product, Smartphone, LawnGrass
 from src.category import Category
-from src.product import Product
-
+import pytest
 
 def test_first_product_init(first_product):
     assert first_product.name == "Samsung Galaxy S23 Ultra"
@@ -118,7 +118,8 @@ def test_product_add_zero_quantity():
 
 def test_product_add_not_supported_type():
     a = Product("Товар A", "Описание", 100, 10)
-    assert a.__add__("строка") is NotImplemented
+    with pytest.raises(TypeError):
+        a.__add__("строка")
 
 
 def test_price_getter():
@@ -145,3 +146,22 @@ def test_new_product_from_dict():
     assert product.price == 100
     assert product.quantity == 10
     assert isinstance(product, Product)
+
+def test_add_same_product_class_ok():
+    a = Product("Товар A", "Описание", 100, 10)
+    b = Product("Товар B", "Описание", 200, 2)
+    assert a + b == 1400
+
+
+def test_add_same_smartphone_class_ok():
+    s1 = Smartphone("Samsung", "оп", 180000.0, 5, "высокая", "S23", 256, "серый")
+    s2 = Smartphone("Iphone", "оп", 210000.0, 8, "высокая", "15", 512, "серый")
+    # 180000*5 + 210000*8 = 900000 + 1680000 = 2580000
+    assert s1 + s2 == 2580000.0
+
+
+def test_add_same_lawn_grass_class_ok():
+    g1 = LawnGrass("Микс 1", "оп", 350, 50, "Россия", 7, "зелёный")
+    g2 = LawnGrass("Микс 2", "оп", 420, 30, "Беларусь", 5, "изумрудный")
+    # 350*50 + 420*30 = 17500 + 12600 = 30100
+    assert g1 + g2 == 30100.0

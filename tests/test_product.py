@@ -1,8 +1,9 @@
+from abc import ABC
+
 import pytest
 
-from abc import ABC
 from src.category import Category
-from src.product import LawnGrass, Product, Smartphone, LogMixin, BaseProduct
+from src.product import BaseProduct, LawnGrass, LogMixin, Product, Smartphone
 
 
 def test_first_product_init(first_product):
@@ -168,7 +169,9 @@ def test_add_same_lawn_grass_class_ok():
     g2 = LawnGrass("Микс 2", "оп", 420, 30, "Беларусь", 5, "изумрудный")
     assert g1 + g2 == 30100.0
 
+
 # ---------- Тесты к заданию: базовый абстрактный класс BaseProduct ----------
+
 
 def test_base_product_cannot_instantiate():
     """BaseProduct — абстрактный класс, экземпляр создать нельзя."""
@@ -220,7 +223,7 @@ def test_log_mixin_prints_on_product_creation(capsys):
 
 def test_log_mixin_prints_class_name(capsys):
     """В сообщении отражается фактический класс объекта."""
-    s = Smartphone("Samsung", "оп", 180000.0, 5, "высокая", "S23", 256, "серый")
+    Smartphone("Samsung", "оп", 180000.0, 5, "высокая", "S23", 256, "серый")
     captured = capsys.readouterr()
     assert "Smartphone" in captured.out
 

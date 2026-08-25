@@ -19,9 +19,9 @@ class BaseProduct(ABC):
 class LogMixin:
     """Миксин: логирует создание объекта с параметрами."""
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
         args_repr = ", ".join(repr(a) for a in args)
         print(f"{self.__class__.__name__}({args_repr})")
+        super().__init__(**kwargs)
 
 class Product(BaseProduct, LogMixin):
     name: str

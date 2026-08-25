@@ -1,7 +1,9 @@
+from abc import ABC
+
 import pytest
 
 from src.category import Category
-from src.product import LawnGrass, Product, Smartphone
+from src.product import BaseProduct, LawnGrass, LogMixin, Product, Smartphone
 
 
 def test_first_product_init(first_product):
@@ -107,8 +109,8 @@ def test_product_str():
 
 
 def test_product_add():
-    a = Product("Товар A", "Описание", 100, 10)  # 100 * 10 = 1000
-    b = Product("Товар B", "Описание", 200, 2)  # 200 * 2 = 400
+    a = Product("Товар A", "Описание", 100, 10)
+    b = Product("Товар B", "Описание", 200, 2)
     assert a + b == 1400
 
 
@@ -159,12 +161,73 @@ def test_add_same_product_class_ok():
 def test_add_same_smartphone_class_ok():
     s1 = Smartphone("Samsung", "оп", 180000.0, 5, "высокая", "S23", 256, "серый")
     s2 = Smartphone("Iphone", "оп", 210000.0, 8, "высокая", "15", 512, "серый")
-    # 180000*5 + 210000*8 = 900000 + 1680000 = 2580000
     assert s1 + s2 == 2580000.0
 
 
 def test_add_same_lawn_grass_class_ok():
     g1 = LawnGrass("Микс 1", "оп", 350, 50, "Россия", 7, "зелёный")
     g2 = LawnGrass("Микс 2", "оп", 420, 30, "Беларусь", 5, "изумрудный")
-    # 350*50 + 420*30 = 17500 + 12600 = 30100
     assert g1 + g2 == 30100.0
+
+
+# ---------- Тесты к заданию: базовый абстрактный класс BaseProduct ----------
+
+
+def test_base_product_cannot_instantiate():
+    """BaseProduct — абстрактный класс, экземпляр создать нельзя."""
+    with pytest.raises(TypeError):
+        BaseProduct("Товар", "Описание", 100, 10)
+
+
+def test_base_product_is_abstract():
+    """BaseProduct наследуется от ABC и содержит абстрактные методы."""
+    assert issubclass(BaseProduct, ABC)
+
+
+def test_product_is_subclass_of_base_product():
+    """Product наследует BaseProduct."""
+    assert issubclass(Product, BaseProduct)
+
+
+def test_smartphone_is_subclass_of_product():
+    """Smartphone остаётся наследником Product."""
+    s = Smartphone("Samsung", "оп", 180000.0, 5, "высокая", "S23", 256, "серый")
+    assert isinstance(s, Smartphone)
+    assert isinstance(s, Product)
+    assert isinstance(s, BaseProduct)
+
+
+def test_lawn_grass_is_subclass_of_product():
+    """LawnGrass остаётся наследником Product."""
+    g = LawnGrass("Микс 1", "оп", 350, 50, "Россия", 7, "зелёный")
+    assert isinstance(g, LawnGrass)
+    assert isinstance(g, Product)
+    assert isinstance(g, BaseProduct)
+
+
+def test_base_product_abstract_methods():
+    """BaseProduct должен объявлять price, __str__, __add__ как абстрактные."""
+    assert BaseProduct.__abstractmethods__
+    # Проверяем, что нужные методы помечены как абстрактные
+    assert "price" in BaseProduct.__abstractmethods__
+    assert "__str__" in BaseProduct.__abstractmethods__
+    assert "__add__" in BaseProduct.__abstractmethods__
+
+
+def test_log_mixin_prints_on_product_creation(capsys):
+    """При создании Product выводится сообщение в консоль."""
+    Product("Продукт1", "Описание продукта", 1200, 10)
+    captured = capsys.readouterr()
+    assert "Продукт1" in captured.out
+
+
+def test_log_mixin_prints_class_name(capsys):
+    """В сообщении отражается фактический класс объекта."""
+    Smartphone("Samsung", "оп", 180000.0, 5, "высокая", "S23", 256, "серый")
+    captured = capsys.readouterr()
+    assert "Smartphone" in captured.out
+
+
+def test_log_mixin_in_mro():
+    """LogMixin присутствует в цепочке наследования Product."""
+    assert LogMixin in Product.__mro__

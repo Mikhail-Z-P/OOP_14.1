@@ -1,10 +1,40 @@
-class Product:
+from abc import ABC, abstractmethod
+
+
+class BaseProduct(ABC):
+    """Базовый абстрактный класс для всех продуктов."""
+
+    @property
+    @abstractmethod
+    def price(self):
+        """Цена с валидацией."""
+
+    @abstractmethod
+    def __str__(self):
+        """Строковое представление."""
+
+    @abstractmethod
+    def __add__(self, other):
+        """Сложение товаров одного класса."""
+
+
+class LogMixin:
+    """Миксин: логирует создание объекта с параметрами."""
+
+    def __init__(self, *args, **kwargs):
+        args_repr = ", ".join(repr(a) for a in args)
+        print(f"{self.__class__.__name__}({args_repr})")
+        super().__init__(**kwargs)
+
+
+class Product(BaseProduct, LogMixin):
     name: str
     description: str
     __price: float
     quantity: int
 
     def __init__(self, name, description, price, quantity):
+        super().__init__(name, description, price, quantity)
         self.name = name
         self.description = description
         self.__price = price

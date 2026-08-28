@@ -41,8 +41,8 @@ def test_product_count():
     p1 = Product(name="Товар A", description="Описание A", price=10.0, quantity=5)
     p2 = Product(name="Товар B", description="Описание B", price=20.0, quantity=3)
 
-    Category(name="Кат1", description="Описание 1", products=[p1, p2])  # +2 товара
-    Category(name="Кат2", description="Описание 2", products=[p1])  # +1 товар
+    Category(name="Кат1", description="Описание 1", products=[p1, p2])
+    Category(name="Кат2", description="Описание 2", products=[p1])
 
     assert Category.product_count == 3
 
@@ -114,12 +114,6 @@ def test_product_add():
     assert a + b == 1400
 
 
-def test_product_add_zero_quantity():
-    a = Product("Товар A", "Описание", 100, 0)
-    b = Product("Товар B", "Описание", 200, 2)
-    assert a + b == 400
-
-
 def test_product_add_not_supported_type():
     a = Product("Товар A", "Описание", 100, 10)
     with pytest.raises(TypeError):
@@ -170,9 +164,6 @@ def test_add_same_lawn_grass_class_ok():
     assert g1 + g2 == 30100.0
 
 
-# ---------- Тесты к заданию: базовый абстрактный класс BaseProduct ----------
-
-
 def test_base_product_cannot_instantiate():
     """BaseProduct — абстрактный класс, экземпляр создать нельзя."""
     with pytest.raises(TypeError):
@@ -208,7 +199,6 @@ def test_lawn_grass_is_subclass_of_product():
 def test_base_product_abstract_methods():
     """BaseProduct должен объявлять price, __str__, __add__ как абстрактные."""
     assert BaseProduct.__abstractmethods__
-    # Проверяем, что нужные методы помечены как абстрактные
     assert "price" in BaseProduct.__abstractmethods__
     assert "__str__" in BaseProduct.__abstractmethods__
     assert "__add__" in BaseProduct.__abstractmethods__
@@ -231,3 +221,9 @@ def test_log_mixin_prints_class_name(capsys):
 def test_log_mixin_in_mro():
     """LogMixin присутствует в цепочке наследования Product."""
     assert LogMixin in Product.__mro__
+
+
+def test_product_zero_quantity_raises_value_error():
+    """Создание товара с нулевым количеством вызывает ValueError."""
+    with pytest.raises(ValueError, match="Товар с нулевым количеством не может быть добавлен"):
+        Product("Товар A", "Описание", 100, 0)

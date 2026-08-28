@@ -211,6 +211,7 @@ def test_add_rejected_product_does_not_increase_count():
         category.add_product("не продукт")
     assert Category.product_count == 0
 
+
 def test_average_price_calculates_average():
     """Средний ценник считается как сумма цен делить на количество товаров."""
     p1 = Product("Товар 1", "Описание 1", 100, 5)

@@ -222,6 +222,7 @@ def test_log_mixin_in_mro():
     """LogMixin присутствует в цепочке наследования Product."""
     assert LogMixin in Product.__mro__
 
+
 def test_product_zero_quantity_raises_value_error():
     """Создание товара с нулевым количеством вызывает ValueError."""
     with pytest.raises(ValueError, match="Товар с нулевым количеством не может быть добавлен"):

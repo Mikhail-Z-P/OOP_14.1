@@ -210,3 +210,16 @@ def test_add_rejected_product_does_not_increase_count():
     with pytest.raises(TypeError):
         category.add_product("не продукт")
     assert Category.product_count == 0
+
+def test_average_price_calculates_average():
+    """Средний ценник считается как сумма цен делить на количество товаров."""
+    p1 = Product("Товар 1", "Описание 1", 100, 5)
+    p2 = Product("Товар 2", "Описание 2", 200, 3)
+    category1 = Category("Техника", "Описание", [p1, p2])
+    assert category1.middle_price() == 150
+
+
+def test_average_price_empty_category_returns_zero():
+    """Пустая категория — деление на ноль — метод возвращает 0."""
+    category1 = Category("Пустая", "Описание", [])
+    assert category1.middle_price() == 0
